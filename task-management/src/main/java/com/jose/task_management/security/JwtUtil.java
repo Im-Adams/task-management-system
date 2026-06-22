@@ -1,0 +1,37 @@
+package com.jose.task_management.security;
+
+import java.util.Date;
+
+import javax.crypto.SecretKey;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+
+public class JwtUtil {
+
+    private static final SecretKey SECRET_KEY =
+            Keys.hmacShaKeyFor(
+                    "mysecretkeymysecretkeymysecretkey12345"
+                            .getBytes()
+            );
+
+    public static String generateToken(String email) {
+
+        return Jwts.builder()
+                .subject(email)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 86400000))
+                .signWith(SECRET_KEY)
+                .compact();
+    }
+
+    public static String extractEmail(String token) {
+
+        return Jwts.parser()
+                .verifyWith(SECRET_KEY)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
+}
