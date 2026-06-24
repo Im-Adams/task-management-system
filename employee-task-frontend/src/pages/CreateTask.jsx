@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "../services/api";
 
 function CreateTask() {
   const [title, setTitle] = useState("");
@@ -10,21 +10,11 @@ function CreateTask() {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem("token");
-
-      await axios.post(
-        "http://localhost:8080/tasks",
-        {
-          title,
-          description,
-          status,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await api.post("/tasks", {
+        title,
+        description,
+        status,
+      });
 
       alert("Task Created Successfully");
 
@@ -48,7 +38,7 @@ function CreateTask() {
           border: "none",
         }}
       >
-  
+
         {/* Header */}
         <div className="text-center mb-4">
           <h2 className="fw-bold text-success">
@@ -58,15 +48,15 @@ function CreateTask() {
             Add task details below
           </p>
         </div>
-  
+
         <form onSubmit={handleSubmit}>
-  
+
           {/* Title */}
           <div className="mb-3">
             <label className="form-label fw-semibold">
               Task Title
             </label>
-  
+
             <input
               type="text"
               className="form-control"
@@ -75,13 +65,13 @@ function CreateTask() {
               placeholder="Enter task title"
             />
           </div>
-  
+
           {/* Description */}
           <div className="mb-3">
             <label className="form-label fw-semibold">
               Description
             </label>
-  
+
             <textarea
               className="form-control"
               rows="4"
@@ -90,13 +80,13 @@ function CreateTask() {
               placeholder="Enter task description"
             />
           </div>
-  
+
           {/* Status */}
           <div className="mb-3">
             <label className="form-label fw-semibold">
               Status
             </label>
-  
+
             <select
               className="form-control"
               value={status}
@@ -106,7 +96,7 @@ function CreateTask() {
               <option value="Completed">✅ Completed</option>
             </select>
           </div>
-  
+
           {/* Button */}
           <button
             type="submit"
@@ -114,7 +104,7 @@ function CreateTask() {
           >
             Create Task
           </button>
-  
+
         </form>
       </div>
     </div>
